@@ -8,3 +8,7 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
       "You may need to delete 'CMakeCache.txt' and 'CMakeFiles/' first."
   )
 endif()
+
+if(MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()

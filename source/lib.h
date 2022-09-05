@@ -1,13 +1,22 @@
 #pragma once
 
 /**
- * @brief Simply initializes the name member to the name of the project
+ * @brief Функция убирает пробельные символы в начале и конце строки
+ * @param str - строка
+ * @return строка без пробельных символов
  */
-struct library {
-  const char* name;
-};
+char* trim(char* str);
 
 /**
- * @brief Creates an instance of library with the name of the project
+ * @brief Функция считывает файл построчно и возвращает указатель на массив строк
+ * @param filename - имя файла
+ * @return - указатель на массив строк
  */
-struct library create_library(void);
+char** read_file(char* filename);
+
+/**
+ * @brief Функция разбивает строку на токены
+ * @param str - строка
+ * @return - указатель на массив строк
+ */
+char** tokenize(char* str);

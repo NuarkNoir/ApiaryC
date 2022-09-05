@@ -1,13 +1,33 @@
+#include <assert.h>
 #include <string.h>
 
 #include "lib.h"
 
-int main(int argc, const char* argv[])
+void check_trim();
+void check_tokenizer();
+
+int main()
 {
-  struct library lib = create_library();
+  check_trim();
+  check_tokenizer();
 
-  (void)argc;
-  (void)argv;
+  return 0;
+}
 
-  return strcmp(lib.name, "ApiaryC") == 0 ? 0 : 1;
+void check_trim() {
+  char* str = "  Hello, world!  ";
+  char* expected = "Hello, world!";
+  char* actual = trim(str);
+
+  assert(strcmp(expected, actual) == 0);
+}
+
+void check_tokenizer() {
+  char* str = "ab bc cd 0.0 2 -1";
+  char** expected = (char*[]){"ab", "bc", "cd", "0.0", "2", "-1", NULL};
+  char** actual = tokenize(str);
+
+  for (int i = 0; expected[i] != NULL; i++) {
+    assert(strcmp(expected[i], actual[i]) == 0);
+  }
 }
