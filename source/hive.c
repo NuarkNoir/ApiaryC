@@ -18,6 +18,22 @@ void hive_destroy(struct Hive* hive)
   free(hive);
 }
 
+void hive_reverse(struct Hive* hive)
+{
+  struct Honeycomb* prev = NULL;
+  struct Honeycomb* current = hive->head;
+  struct Honeycomb* next = NULL;
+  
+  while (current != NULL) {
+    next = current->next;
+    current->next = prev;
+    prev = current;
+    current = next;
+  }
+  
+  hive->head = prev;
+}
+
 void hive_push(struct Hive* hive, void* data)
 {
   struct Honeycomb* comb = (struct Honeycomb*)malloc(sizeof(struct Honeycomb));
@@ -68,17 +84,6 @@ void hive_remove(struct Hive* hive, struct Honeycomb* node)
     prev = comb;
     comb = comb->next;
   }
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
-  node=NULL;
 }
 
 bool hive_is_empty(struct Hive* hive)

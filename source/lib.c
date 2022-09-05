@@ -24,6 +24,8 @@ char* trim(char* str)
   if (str == NULL)
     return NULL;
 
+  str = trim_start(str);
+
   char* end;
 
   if (*str == 0) // All spaces?

@@ -15,6 +15,8 @@ struct Hive* hive_create();
 
 void hive_destroy(struct Hive* hive);
 
+void hive_reverse(struct Hive* hive);
+
 void hive_push(struct Hive* hive, void* data);
 
 void hive_pop_start(struct Hive* hive);

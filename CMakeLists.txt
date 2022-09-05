@@ -43,6 +43,21 @@ target_include_directories(
 
 target_compile_features(ApiaryC_hive PUBLIC c_std_11)
 
+# ---- Declare library ----
+
+add_library(
+    ApiaryC_melipona OBJECT
+    source/melipona.c
+)
+
+target_include_directories(
+    ApiaryC_melipona ${warning_guard}
+    PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
+)
+
+target_compile_features(ApiaryC_melipona PUBLIC c_std_11)
+
 # ---- Declare executable ----
 
 add_executable(ApiaryC_exe source/main.c)
@@ -54,6 +69,7 @@ target_compile_features(ApiaryC_exe PRIVATE c_std_11)
 
 target_link_libraries(ApiaryC_exe PRIVATE ApiaryC_beekeeper)
 target_link_libraries(ApiaryC_exe PRIVATE ApiaryC_hive)
+target_link_libraries(ApiaryC_exe PRIVATE ApiaryC_melipona)
 
 # ---- Install rules ----
 
