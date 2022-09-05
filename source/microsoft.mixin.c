@@ -3,20 +3,20 @@
 #include <stddef.h>
 #include <stdio.h>
 
-size_t getline(char **lineptr, size_t *n, FILE *stream) {
+size_t getline(char **lineptr, size_t *n, FILE *stream) { // NOLINT
     char *bufptr = NULL;
     char *p = bufptr;
     size_t size;
     int c;
 
     if (lineptr == NULL) {
-        return -1;
+        return -1; // NOLINT
     }
     if (stream == NULL) {
-        return -1;
+        return -1; // NOLINT
     }
     if (n == NULL) {
-        return -1;
+        return -1; // NOLINT
     }
     bufptr = *lineptr;
     size = *n;
@@ -34,14 +34,14 @@ size_t getline(char **lineptr, size_t *n, FILE *stream) {
     }
     p = bufptr;
     while(c != EOF) {
-        if ((p - bufptr) > (size - 1)) {
+        if ((p - bufptr) > (size - 1)) { // NOLINT
             size = size + 128;
             bufptr = realloc(bufptr, size);
             if (bufptr == NULL) {
-                return -1;
+                return -1; // NOLINT
             }
         }
-        *p++ = c;
+        *p++ = c; // NOLINT
         if (c == '\n') {
             break;
         }

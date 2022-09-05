@@ -7,7 +7,8 @@ project(ApiaryCTests LANGUAGES C)
 # ---- Tests ----
 
 add_executable(ApiaryC_test source/ApiaryC_test.c)
-target_link_libraries(ApiaryC_test PRIVATE ApiaryC_lib)
+target_link_libraries(ApiaryC_test PRIVATE ApiaryC_beekeeper)
+target_link_libraries(ApiaryC_test PRIVATE ApiaryC_hive)
 target_compile_features(ApiaryC_test PRIVATE c_std_11)
 
 add_test(NAME ApiaryC_test COMMAND ApiaryC_test)

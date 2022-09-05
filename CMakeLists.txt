@@ -16,17 +16,32 @@ include(cmake/variables.cmake)
 # ---- Declare library ----
 
 add_library(
-    ApiaryC_lib OBJECT
+    ApiaryC_beekeeper OBJECT
     source/lib.c
 )
 
 target_include_directories(
-    ApiaryC_lib ${warning_guard}
+    ApiaryC_beekeeper ${warning_guard}
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
 )
 
-target_compile_features(ApiaryC_lib PUBLIC c_std_11)
+target_compile_features(ApiaryC_beekeeper PUBLIC c_std_11)
+
+# ---- Declare library ----
+
+add_library(
+    ApiaryC_hive OBJECT
+    source/hive.c
+)
+
+target_include_directories(
+    ApiaryC_hive ${warning_guard}
+    PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
+)
+
+target_compile_features(ApiaryC_hive PUBLIC c_std_11)
 
 # ---- Declare executable ----
 
@@ -37,7 +52,8 @@ set_property(TARGET ApiaryC_exe PROPERTY OUTPUT_NAME ApiaryC)
 
 target_compile_features(ApiaryC_exe PRIVATE c_std_11)
 
-target_link_libraries(ApiaryC_exe PRIVATE ApiaryC_lib)
+target_link_libraries(ApiaryC_exe PRIVATE ApiaryC_beekeeper)
+target_link_libraries(ApiaryC_exe PRIVATE ApiaryC_hive)
 
 # ---- Install rules ----
 

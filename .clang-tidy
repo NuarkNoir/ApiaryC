@@ -5,10 +5,8 @@ Checks: "-*,\
   clang-analyzer-*,\
   cert-*,\
   bugprone-*,\
-  concurrency-*,\
   misc-*,\
   portability-*,\
-  openmp-*,\
   readability-*"
 WarningsAsErrors: ''
 CheckOptions:
@@ -32,4 +30,6 @@ CheckOptions:
     value: 'true'
   - key: 'readability-inconsistent-declaration-parameter-name.Strict'
     value: 'true'
+  - key: 'readability-function-size.StatementThreshold'
+    value: '15'
 ...

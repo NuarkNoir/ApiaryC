@@ -1,0 +1,107 @@
+# после возникновения ошибки 
+# парсинга - дальнейший контент 
+# не разбирается, поэтому 
+# оставшиеся параметры опускаю
+
+# entities: [ 
+#   plane{len:int, cap:int, spd:int, dist:int, dest:str}, 
+#   train{cnt:int, spd:int, dist:int, dest:str} 
+# ]
+# meta: [
+#   dest str-format: anyOf("гор.", "д.", "п.г.т.", "с.") + word
+# ]
+
+# ERR_WRONG_KW
+SROT
+# ERR_UNK_ATTR
+SORT color
+
+# ERR_UNK_ENT
+ADD trein
+# ERR_WRONG_PARAMS
+ADD plane
+ADD train 1 1 1 1
+ADD train 1 1 1 гор. тест 1
+# ERR_MALFORMED_INPUT
+SORT
+REM
+ADD
+ADD plane -1
+ADD plane 0
+ADD plane 1.1
+ADD plane 1 0
+ADD plane 1 -1
+ADD plane 1 1.1
+
+# ERR_UNK_ATTR
+REM if color = 1
+# ERR_UNK_PRED
+REM if spd ; 5
+
+# check REM first node
+ADD train 1 5 1 гор. тест
+ADD plane 1 1 1 1 гор. тест
+REM if spd = 5
+SORT spd
+PRINT
+CLEAR
+
+# check REM last node
+ADD train 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+REM if spd = 5
+SORT spd
+PRINT
+CLEAR
+
+# check REM middle node
+ADD train 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 6 1 1 1 гор. тест
+REM if spd = 5
+SORT spd
+PRINT
+CLEAR
+
+# check REM first mult node
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 6 1 1 1 гор. тест
+REM if spd = 5
+SORT spd
+PRINT
+CLEAR
+
+# check REM last mult node
+ADD plane 6 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+REM if spd = 5
+SORT spd
+PRINT
+CLEAR
+
+# check REM middle mult node
+ADD plane 6 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 6 1 1 1 гор. тест
+REM if spd = 5
+SORT spd
+PRINT
+CLEAR
+
+# check REM fragmented mult node
+ADD plane 6 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 6 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+ADD plane 5 1 1 1 гор. тест
+REM if spd = 5
+SORT spd
+PRINT
+CLEAR

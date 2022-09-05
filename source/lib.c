@@ -9,6 +9,16 @@
 #include "microsoft.mixin.c"
 #endif
 
+char* trim_start(char* str) 
+{
+  while (isspace((unsigned char)*str)) 
+  {
+    str++;
+  }
+
+  return str;
+}
+
 char* trim(char* str)
 {
   if (str == NULL)
@@ -16,16 +26,12 @@ char* trim(char* str)
 
   char* end;
 
-  // Trim leading space
-  while (isspace(*str))
-    str++;
-
   if (*str == 0) // All spaces?
     return str;
 
   // Trim trailing space
   end = str + strlen(str) - 1;
-  while (end > str && isspace(*end))
+  while (end > str && isspace((unsigned char)*end))
     end--;
 
   // Write new null terminator
@@ -37,8 +43,7 @@ char* trim(char* str)
 char** read_file(char* filename)
 {
   FILE* file = fopen(filename, "r");
-  if (file == NULL)
-    return NULL;
+  if (file == NULL) return NULL;
 
   char** lines = NULL;
   size_t size = 0;
@@ -49,13 +54,14 @@ char** read_file(char* filename)
 
   while ((read = getline(&line, &len, file)) != -1)
   {
+    line = trim_start(line);
+    if (line[0] == '#') continue;
+
     line = trim(line);
-    if (strlen(line) == 0)
-      continue;
+    if (strlen(line) == 0) continue;
 
     lines = realloc(lines, sizeof(char*) * ++size);
-    if (lines == NULL)
-      return NULL;
+    if (lines == NULL) return NULL;
 
     lines[size - 1] = line;
     line = NULL;
@@ -69,25 +75,15 @@ char** read_file(char* filename)
 
 char** tokenize(char* str)
 {
-  // Count spaces in string
-  int spaces = 0;
-  for (int i = 0; i < strlen(str); i++)
-  {
-    if (str[i] == ' ')
-    {
-      spaces++;
-    }
-  }
-
   char** tokens = NULL;
   char* token = strtok(str, " ");
 
   int i = 0;
-  while (token != NULL) {
+  while (token != NULL) 
+  {
     tokens = realloc(tokens, sizeof(char*) * ++i);
 
-    if (tokens == NULL)
-      exit(-1);
+    if (tokens == NULL) return NULL;
 
     tokens[i - 1] = token;
 
