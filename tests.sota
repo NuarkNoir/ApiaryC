@@ -58,7 +58,7 @@ ECHO check REM middle node
 ADD train 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
-REM if cnt = 5
+REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
@@ -68,7 +68,7 @@ ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
-REM if cnt = 5
+REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
@@ -78,7 +78,7 @@ ADD plane 6 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
-REM if cnt = 5
+REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
@@ -89,7 +89,7 @@ ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
-REM if cnt = 5
+REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
@@ -101,6 +101,6 @@ ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
-REM if cnt = 5
+REM if len = 5
 PRINT
 CLEAR

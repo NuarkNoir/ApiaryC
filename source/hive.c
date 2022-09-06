@@ -20,62 +20,71 @@ void hive_destroy(struct Hive* hive)
 
 void hive_reverse(struct Hive* hive)
 {
+  if (hive->head == NULL) return;
+  struct Honeycomb* old_first = hive->head;
   struct Honeycomb* prev = NULL;
   struct Honeycomb* current = hive->head;
   struct Honeycomb* next = NULL;
   
-  while (current != NULL) {
+  do {
     next = current->next;
     current->next = prev;
     prev = current;
     current = next;
-  }
+  } while (current != hive->head);
   
   hive->head = prev;
+  old_first->next = hive->head;
 }
 
 void hive_push(struct Hive* hive, void* data)
 {
-  struct Honeycomb* comb = (struct Honeycomb*)malloc(sizeof(struct Honeycomb));
+  struct Honeycomb* comb = (struct Honeycomb*)malloc(sizeof(struct Honeycomb) + sizeof(void*));
   comb->data = data;
-  comb->next = hive->head;
-  hive->head = comb;
+  if (hive->head == NULL) {
+    comb->next = comb;
+    hive->head = comb;
+  } else if (hive->head->next == hive->head) {
+    hive->head->next = comb;
+    comb->next = hive->head;
+  } else {
+    struct Honeycomb* last = hive->head->next;
+    while (last->next != hive->head) {
+      last = last->next;
+    }
+    last->next = comb;
+    comb->next = hive->head;
+  }
 }
 
 void hive_pop_start(struct Hive* hive)
 {
-  struct Honeycomb* comb = hive->head;
-  hive->head = comb->next;
-  free(comb);
-}
-
-void hive_pop_end(struct Hive* hive)
-{
-  struct Honeycomb* comb = hive->head;
-  if (comb->next == NULL) {
-    hive_pop_start(hive);
-    return;
+  if (hive->head == NULL) return;
+  if (hive->head == hive->head->next) {
+    free(hive->head);
+    hive->head = NULL;
+  } else {
+    struct Honeycomb* last = hive->head->next;
+    while (last->next != hive->head) {
+      last = last->next;
+    }
+    struct Honeycomb* comb = hive->head;
+    hive->head = hive->head->next;
+    last->next = hive->head;
+    free(comb);
   }
-  struct Honeycomb* prev = NULL;
-  while (comb->next != NULL) {
-    prev = comb;
-    comb = comb->next;
-  }
-  if (prev != NULL) {
-    prev->next = NULL;
-  }
-  free(comb);
 }
 
 void hive_remove(struct Hive* hive, struct Honeycomb* node)
 {
   struct Honeycomb* comb = hive->head;
+  if (comb == NULL) return;
   if (comb == node) {
     hive_pop_start(hive);
     return;
   }
   struct Honeycomb* prev = NULL;
-  while (comb != NULL) {
+  do {
     if (comb == node) {
       prev->next = comb->next;
       free(comb);
@@ -83,7 +92,7 @@ void hive_remove(struct Hive* hive, struct Honeycomb* node)
     }
     prev = comb;
     comb = comb->next;
-  }
+  } while (comb != hive->head);
 }
 
 bool _hive_remove_if_attr_predicate(char* attr, char* predicate, void* data, void* expected) 
@@ -109,22 +118,28 @@ bool _hive_remove_if_attr_predicate(char* attr, char* predicate, void* data, voi
 void hive_remove_if_attr(struct Hive* hive, char* attr, char* predicate, void* data)
 {
   struct Honeycomb* comb = hive->head;
+  if (comb == NULL) return;
   struct Honeycomb* prev = NULL;
-  while (comb != NULL) {
-    if (_hive_remove_if_attr_predicate(attr, predicate, comb->data, data)) {
-      if (prev == NULL) {
-        hive_pop_start(hive);
-        comb = hive->head;
-      } else {
-        prev->next = comb->next;
-        free(comb);
-        comb = prev->next;
-      }
-    } else {
-      prev = comb;
+  do {
+    while (hive->head != NULL && _hive_remove_if_attr_predicate(attr, predicate, comb->data, data)) {
+      struct Honeycomb* next = comb->next;
+      hive_remove(hive, comb);
+      comb = next;
+      //if (prev == NULL) {
+      //  hive_pop_start(hive);
+      //  comb = hive->head;
+      //} else {
+      //  prev->next = comb->next;
+      //  free(comb);
+      //  comb = prev->next;
+      //}
+    }/* else {
+      //prev = comb;
       comb = comb->next;
-    }
-  }
+    }*/
+    if (hive->head == NULL) return;
+    comb = comb->next;
+  } while (comb != hive->head);
 }
 
 bool hive_is_empty(struct Hive* hive)
@@ -135,10 +150,11 @@ bool hive_is_empty(struct Hive* hive)
 void hive_print(struct Hive* hive, void (*printer)(void*))
 {
   struct Honeycomb* comb = hive->head;
-  while (comb != NULL) {
+  if (comb == NULL) return;
+  do {
     (*printer)(comb->data);
     comb = comb->next;
-  }
+  } while (comb != hive->head);
 }
 
 void hive_clear(struct Hive* hive)
@@ -151,9 +167,10 @@ void hive_clear(struct Hive* hive)
 void hive_sort(struct Hive* hive, char* attr, bool (*comparator)(char*, void*, void*))
 {
   struct Honeycomb* comb = hive->head;
-  while (comb != NULL) {
+  if (comb == NULL) return;
+  do {
     struct Honeycomb* next = comb->next;
-    while (next != NULL) {
+    while (next != hive->head) {
       if ((*comparator)(attr, comb->data, next->data)) {
         void* temp = comb->data;
         comb->data = next->data;
@@ -162,5 +179,5 @@ void hive_sort(struct Hive* hive, char* attr, bool (*comparator)(char*, void*, v
       next = next->next;
     }
     comb = comb->next;
-  }
+  } while (comb != hive->head);
 }

@@ -22,8 +22,6 @@ void hive_push(struct Hive* hive, void* data);
 
 void hive_pop_start(struct Hive* hive);
 
-void hive_pop_end(struct Hive* hive);
-
 void hive_remove(struct Hive* hive, struct Honeycomb* node);
 
 void hive_remove_if_attr(struct Hive* hive, char* attr, char* predicate, void* data);

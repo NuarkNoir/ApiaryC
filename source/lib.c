@@ -135,7 +135,6 @@ bool _is_number(char* str)
 }
 
 char** destination_prefixes = NULL;
-//char** destination_prefixes = (char*[]){"гор.", "д.", "п.г.т.", "с.", NULL};
 
 void _parse_meta_append_to_var_destination_prefixes(char** tokens)
 {
@@ -242,7 +241,7 @@ void _parse_CLEAR(struct Hive* hive)
   hive_clear(hive);
 }
 
-void _parse_SORT_comparator(char* attr, void* a, void* b) 
+bool _parse_SORT_comparator(char* attr, void* a, void* b) 
 {
   void* attrA = get_attr(a, attr);
   void* attrB = get_attr(b, attr);
