@@ -4,20 +4,28 @@
 #include <stddef.h>
 #include <stdio.h>
 
-size_t getline(char **lineptr, size_t *n, FILE *stream) { // NOLINT
+/**
+ * @brief Функция считывает строку из некоторого потока stream
+ * @note Данная функция не является стандартной для MSVC, поэтому я её взял из компилятора какого-то другого компилятора
+ * @param[out] lineptr - указатель на указатель на строку
+ * @param[out] n - указатель на размер строки
+ * @param[in] stream - поток
+ * @return - кол-во прочитанных символов
+ */
+size_t getline(char **lineptr, size_t *n, FILE *stream) {
     char *bufptr = NULL;
     char *p = bufptr;
     size_t size;
     int c;
 
     if (lineptr == NULL) {
-        return -1; // NOLINT
+        return -1;
     }
     if (stream == NULL) {
-        return -1; // NOLINT
+        return -1;
     }
     if (n == NULL) {
-        return -1; // NOLINT
+        return -1;
     }
     bufptr = *lineptr;
     size = *n;
@@ -35,14 +43,14 @@ size_t getline(char **lineptr, size_t *n, FILE *stream) { // NOLINT
     }
     p = bufptr;
     while(c != EOF) {
-        if ((p - bufptr) > (size - 1)) { // NOLINT
+        if ((p - bufptr) > (size - 1)) {
             size = size + 128;
             bufptr = realloc(bufptr, size);
             if (bufptr == NULL) {
-                return -1; // NOLINT
+                return -1;
             }
         }
-        *p++ = c; // NOLINT
+        *p++ = c;
         if (c == '\n') {
             break;
         }
