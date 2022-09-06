@@ -1,8 +1,3 @@
-# после возникновения ошибки 
-# парсинга - дальнейший контент 
-# не разбирается, поэтому 
-# оставшиеся параметры опускаю
-
 # entities: [ 
 #   plane{len:int, cap:int, spd:int, dist:int, dest:str}, 
 #   train{cnt:int, spd:int, dist:int, dest:str} 
@@ -11,18 +6,21 @@
 #   dest str-format: anyOf("гор.", "д.", "п.г.т.", "с.") + word
 # ]
 
-# ERR_WRONG_KW
-SROT
-# ERR_UNK_ATTR
-SORT color
+@meta append-to-var destination_prefixes гор. д. п.г.т. с.
 
-# ERR_UNK_ENT
+ECHO ERR_WRONG_KW
+SROT
+ECHO ERR_UNK_ATTR
+SORT color
+ECHO ==============================================================
+
+ECHO ERR_UNK_ENT
 ADD trein
-# ERR_WRONG_PARAMS
+ECHO ERR_WRONG_PARAMS
 ADD plane
 ADD train 1 1 1 1
 ADD train 1 1 1 гор. тест 1
-# ERR_MALFORMED_INPUT
+ECHO ERR_MALFORMED_INPUT
 SORT
 REM
 ADD
@@ -32,76 +30,77 @@ ADD plane 1.1
 ADD plane 1 0
 ADD plane 1 -1
 ADD plane 1 1.1
+ECHO ==============================================================
 
-# ERR_UNK_ATTR
+ECHO ERR_UNK_ATTR
 REM if color = 1
-# ERR_UNK_PRED
+ECHO ERR_UNK_PRED
 REM if spd ; 5
+ECHO ==============================================================
 
-# check REM first node
+ECHO check REM first node
 ADD train 1 5 1 гор. тест
 ADD plane 1 1 1 1 гор. тест
 REM if spd = 5
-SORT spd
 PRINT
 CLEAR
+ECHO ==============================================================
 
-# check REM last node
+ECHO check REM last node
 ADD train 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
-REM if spd = 5
-SORT spd
+REM if len = 5
 PRINT
 CLEAR
+ECHO ==============================================================
 
-# check REM middle node
+ECHO check REM middle node
 ADD train 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
-REM if spd = 5
-SORT spd
+REM if cnt = 5
 PRINT
 CLEAR
+ECHO ==============================================================
 
-# check REM first mult node
+ECHO check REM first mult node
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
-REM if spd = 5
-SORT spd
+REM if cnt = 5
 PRINT
 CLEAR
+ECHO ==============================================================
 
-# check REM last mult node
+ECHO check REM last mult node
 ADD plane 6 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
-REM if spd = 5
-SORT spd
+REM if cnt = 5
 PRINT
 CLEAR
+ECHO ==============================================================
 
-# check REM middle mult node
+ECHO check REM middle mult node
 ADD plane 6 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
-REM if spd = 5
-SORT spd
+REM if cnt = 5
 PRINT
 CLEAR
+ECHO ==============================================================
 
-# check REM fragmented mult node
+ECHO check REM fragmented mult node
 ADD plane 6 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 6 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
 ADD plane 5 1 1 1 гор. тест
-REM if spd = 5
-SORT spd
+REM if cnt = 5
 PRINT
 CLEAR

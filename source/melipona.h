@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MELIPONA_H
+#define MELIPONA_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -34,3 +35,5 @@ bool has_attr(void* obj, char* attr);
 void* get_attr(void* obj, char* attr);
 bool attr_eq_int(void* obj, char* attr, int val);
 bool attr_eq_str(void* obj, char* attr, char* val);
+
+#endif // MELIPONA_H

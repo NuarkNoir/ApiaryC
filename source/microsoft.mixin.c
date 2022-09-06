@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MICROSOFT_MIXIN_H
+#define MICROSOFT_MIXIN_H
 
 #include <stddef.h>
 #include <stdio.h>
@@ -54,3 +55,5 @@ size_t getline(char **lineptr, size_t *n, FILE *stream) { // NOLINT
 
     return p - bufptr - 1;
 }
+
+#endif // MICROSOFT_MIXIN_H

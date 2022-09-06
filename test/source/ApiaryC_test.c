@@ -10,6 +10,7 @@ void check_tokenizer();
 void check_hive();
 void check_hive_long();
 void check_melipona();
+void check_hive_attributic();
 
 int main()
 {
@@ -18,6 +19,7 @@ int main()
   check_hive();
   check_hive_long();
   check_melipona();
+  check_hive_attributic();
 
   return 0;
 }
@@ -93,4 +95,15 @@ void check_melipona() {
   assert(attr_eq_int(plane, "len", 1));
   assert(attr_eq_int(train, "cnt", 5));
   assert(attr_eq_str(plane, "dest", "Hello, world!"));
+}
+
+void check_hive_attributic() {
+  struct Hive* hive = hive_create();
+
+  hive_push(hive, plane_create(1, 2, 3, 4, "Hello, world!"));
+  hive_push(hive, train_create(5, 6, 7, "Hello, world!"));
+  hive_push(hive, plane_create(1, 3, 5, 4, "Hello, world!"));
+  hive_push(hive, train_create(5, 6, 7, "Hello, world!"));
+  char* v = "2";
+  hive_remove_if_attr(hive, "cap", "<", v);
 }

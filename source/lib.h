@@ -1,4 +1,7 @@
-#pragma once
+#ifndef PARSER_LIB_H
+#define PARSER_LIB_H
+
+#include "hive.h"
 
 /**
  * @brief Функция убирает пробельные символы в начале и конце строки
@@ -12,7 +15,7 @@ char* trim(char* str);
  * @param filename - имя файла
  * @return - указатель на массив строк
  */
-char** read_file(char* filename);
+char** read_file(const char* filename);
 
 /**
  * @brief Функция разбивает строку на токены
@@ -20,3 +23,7 @@ char** read_file(char* filename);
  * @return - указатель на массив строк
  */
 char** tokenize(char* str);
+
+void parse_line(char** tokens, struct Hive* hive);
+
+#endif // PARSER_LIB_H
