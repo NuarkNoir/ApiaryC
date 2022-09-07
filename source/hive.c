@@ -125,18 +125,7 @@ void hive_remove_if_attr(struct Hive* hive, char* attr, char* predicate, void* d
       struct Honeycomb* next = comb->next;
       hive_remove(hive, comb);
       comb = next;
-      //if (prev == NULL) {
-      //  hive_pop_start(hive);
-      //  comb = hive->head;
-      //} else {
-      //  prev->next = comb->next;
-      //  free(comb);
-      //  comb = prev->next;
-      //}
-    }/* else {
-      //prev = comb;
-      comb = comb->next;
-    }*/
+    }
     if (hive->head == NULL) return;
     comb = comb->next;
   } while (comb != hive->head);
