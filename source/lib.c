@@ -205,11 +205,24 @@ void _parse_ADD_train(char** params, struct Hive* hive) {
   hive_push(hive, train);
 }
 
+void _parse_ADD_boat(char** params, struct Hive* hive) {
+  if (count_tokens(params) != 6 || !_is_number(params[0]) || !_is_number(params[1]) || !_is_number(params[2]) || !_is_number(params[3]) || !_valid_dest_prefix(params[4])) 
+  {
+    printf("Invalid ADD plane comand\n");
+    return;
+  }
+  struct Boat* boat = boat_create(
+    atoi(params[0]), atoi(params[1]), atoi(params[2]), atoi(params[3]), _parse_desination(params + 4)
+  );
+  hive_push(hive, boat);
+}
+
 void _parse_ADD(char** params, struct Hive* hive) 
 {
   if (params[0] == NULL) printf("Invalid ADD command\n");
   else if (seq(params[0], "plane")) _parse_ADD_plane(params + 1, hive);
   else if (seq(params[0], "train")) _parse_ADD_train(params + 1, hive);
+  else if (seq(params[0], "boat")) _parse_ADD_boat(params + 1, hive);
   else printf("Unknown entity type: %s\n", params[0]);
 }
 
@@ -223,17 +236,23 @@ void _hive_PRINT_train(struct Train* train)
   printf("Train {cnt: %d; spd: %d; dest: '%s'}\n", train->cnt, train->spd, train->dest);
 }
 
+void _hive_PRINT_boat(struct Boat* boat)
+{
+  printf("Boat {disp: %d; year: %d; spd: %d; dist: %d; dest: '%s'}\n", boat->disp, boat->year, boat->spd, boat->dist, boat->dest);
+}
+
 void _parse_PRINT_internals(int idx, void* data) 
 {
   printf("%d. ", idx);
   if (is_plane(data)) _hive_PRINT_plane((struct Plane*)data);
   else if (is_train(data)) _hive_PRINT_train((struct Train*)data);
+  else if (is_boat(data)) _hive_PRINT_boat((struct Boat*)data);
   else printf("%p\n", data);
 }
 
 void _parse_PRINT(struct Hive* hive) 
 {
-  printf("List contains %d elements\n", hive_size(hive));
+  printf("List contains %zd elements\n", hive_size(hive));
   if (hive_is_empty(hive)) printf("Empty\n");
   else hive_print(hive, &_parse_PRINT_internals);
 }
@@ -303,6 +322,7 @@ void _parse_EXIT(char** tokens)
   exit(exitCode);
 }
 
+// TODO: Add RENAME
 void parse_line(char** tokens, struct Hive* hive) {
   if (seq(tokens[0], "@meta")) _parse_meta(tokens + 1);
   else if (seq(tokens[0], "ADD")) _parse_ADD(tokens + 1, hive);

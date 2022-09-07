@@ -26,6 +26,18 @@ struct Train* train_create(int cnt, int spd, int dist, char* dest)
   return train;
 }
 
+struct Boat* boat_create(int disp, int year, int spd, int dist, char* dest)
+{
+  struct Boat* boat = (struct Boat*)malloc(sizeof(struct Boat) + sizeof(int)*5 + sizeof(char*));
+  boat->__struct_id = 2;
+  boat->disp = disp;
+  boat->year = year;
+  boat->spd = spd;
+  boat->dist = dist;
+  boat->dest = dest;
+  return boat;
+}
+
 bool is_plane(void* obj)
 {
   return ((struct Plane*)obj)->__struct_id == 0;
@@ -36,9 +48,15 @@ bool is_train(void* obj)
   return ((struct Train*)obj)->__struct_id == 1;
 }
 
+bool is_boat(void* obj)
+{
+  return ((struct Boat*)obj)->__struct_id == 2;
+}
+
 char** common_attrs = (char*[]) { "spd", "dist", "dest", NULL};
 char** plane_attrs = (char*[]) { "len", "cap", NULL};
 char** train_attrs = (char*[]) { "cnt", NULL};
+char** boat_attrs = (char*[]) { "disp", "year", NULL};
 
 bool is_plane_attr(char* attr)
 {
@@ -60,6 +78,16 @@ bool is_train_attr(char* attr)
   return false;
 }
 
+bool is_boat_attr(char* attr)
+{
+  for (int i = 0; boat_attrs[i] != NULL; i++) {
+    if (strcmp(attr, boat_attrs[i]) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool is_attr(char* attr)
 {
   for (int i = 0; common_attrs[i] != NULL; i++) {
@@ -67,7 +95,7 @@ bool is_attr(char* attr)
       return true;
     }
   }
-  return is_plane_attr(attr) || is_train_attr(attr);
+  return is_plane_attr(attr) || is_train_attr(attr) || is_boat_attr(attr);
 }
 
 bool has_attr(void* obj, char* attr)
@@ -110,12 +138,30 @@ void* get_train_attr(struct Train* train, char* attr)
   return NULL;
 }
 
+void* get_boat_attr(struct Boat* boat, char* attr)
+{
+  if (strcmp(attr, "disp") == 0) {
+    return &boat->disp;
+  } else if (strcmp(attr, "year") == 0) {
+    return &boat->year;
+  } else if (strcmp(attr, "spd") == 0) {
+    return &boat->spd;
+  } else if (strcmp(attr, "dist") == 0) {
+    return &boat->dist;
+  } else if (strcmp(attr, "dest") == 0) {
+    return &boat->dest;
+  }
+  return NULL;
+}
+
 void* get_attr(void* obj, char* attr)
 {
   if (is_plane(obj)) {
     return get_plane_attr((struct Plane*)obj, attr);
   } else if (is_train(obj)) {
     return get_train_attr((struct Train*)obj, attr);
+  } else if (is_boat(obj)) {
+    return get_boat_attr((struct Boat*)obj, attr);
   }
   return NULL;
 }

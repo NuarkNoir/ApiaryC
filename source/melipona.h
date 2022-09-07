@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include "hive.h"
 
+// TODO: Add name attr to all
 /**
  * @brief Структура, описывающая самолёт
  */
@@ -23,6 +24,15 @@ struct Plane {
 struct Train {
     int __struct_id;
     int cnt; ///< vagon count
+    int spd; ///< speed
+    int dist; ///< distance
+    char* dest; ///< destination
+};
+
+struct Boat {
+    int __struct_id;
+    int disp; ///< water displacement
+    int year; ///< year of construction
     int spd; ///< speed
     int dist; ///< distance
     char* dest; ///< destination
@@ -49,6 +59,17 @@ struct Plane* plane_create(int len, int cap, int spd, int dist, char* dest);
 struct Train* train_create(int cnt, int spd, int dist, char* dest);
 
 /**
+ * @brief Функция, создающая самолёт
+ * @param[in] disp - water displacement
+ * @param[in] year - year of construction
+ * @param[in] spd - speed
+ * @param[in] dist - distance
+ * @param[in] dest - destination
+ * @return - указатель на структуру Boat
+ */
+struct Boat* boat_create(int disp, int year, int spd, int dist, char* dest);
+
+/**
  * @brief Функция, проверяющая тип объекта на соответствие Plane
  * @param[in] obj - указатель на объект
  * @return - true, если объект Plane, иначе false
@@ -60,6 +81,12 @@ bool is_plane(void* obj);
  * @return - true, если объект Train, иначе false
  */
 bool is_train(void* obj);
+/**
+ * @brief Функция, проверяющая тип объекта на соответствие Boat
+ * @param[in] obj - указатель на объект
+ * @return - true, если объект Boat, иначе false
+ */
+bool is_boat(void* obj);
 
 /**
  * @brief Функция, проверяющая аттрибут на налиичие в структуре Plane
@@ -73,6 +100,12 @@ bool is_plane_attr(char* attr);
  * @return - true, если это аттрибут Train, иначе false
  */
 bool is_train_attr(char* attr);
+/**
+ * @brief Функция, проверяющая аттрибут на налиичие в структуре Boat
+ * @param[in] attr - аттрибут
+ * @return - true, если это аттрибут Boat, иначе false
+ */
+bool is_boat_attr(char* attr);
 /**
  * @brief Функция, проверяющая аттрибут на налиичие в структуре Plane, или Train, или других
  * @param[in] attr - аттрибут
