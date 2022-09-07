@@ -78,7 +78,7 @@ bool hive_is_empty(struct Hive* hive);
  * @param[in] hive - указатель на список
  * @param[in] printer - указатель на функцию, которая выводит элемент списка
  */
-void hive_print(struct Hive* hive, void (*printer)(void*));
+void hive_print(struct Hive* hive, void (*printer)(int, void*));
 
 /**
  * @brief Функция очищает список
@@ -94,5 +94,12 @@ void hive_clear(struct Hive* hive);
  * @param[in] comparator - указатель на функцию, которая сравнивает элементы списка
  */
 void hive_sort(struct Hive* hive, char* attr, bool (*comparator)(char*, void*, void*));
+
+/**
+ * @brief Функция считает кол-во элементов в списке
+ * @param[in] hive - указатель на список
+ * @return - кол-во элементов в списке
+ */
+size_t hive_size(struct Hive* hive);
 
 #endif // HIVE_H

@@ -136,12 +136,13 @@ bool hive_is_empty(struct Hive* hive)
   return hive->head == NULL;
 }
 
-void hive_print(struct Hive* hive, void (*printer)(void*))
+void hive_print(struct Hive* hive, void (*printer)(int, void*))
 {
   struct Honeycomb* comb = hive->head;
   if (comb == NULL) return;
+  int idx = 0;
   do {
-    (*printer)(comb->data);
+    (*printer)(idx++, comb->data);
     comb = comb->next;
   } while (comb != hive->head);
 }
@@ -169,4 +170,19 @@ void hive_sort(struct Hive* hive, char* attr, bool (*comparator)(char*, void*, v
     }
     comb = comb->next;
   } while (comb != hive->head);
+}
+
+size_t hive_size(struct Hive* hive)
+{
+  size_t c = 0;
+  struct Honeycomb* comb = hive->head;
+  if (comb != NULL) {
+    while (true) {
+      c += 1;
+      comb = comb->next;
+      if (comb == hive->head) break;
+    }
+  }
+
+  return c;
 }

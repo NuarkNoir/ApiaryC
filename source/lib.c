@@ -223,8 +223,9 @@ void _hive_PRINT_train(struct Train* train)
   printf("Train {cnt: %d; spd: %d; dest: '%s'}\n", train->cnt, train->spd, train->dest);
 }
 
-void _parse_PRINT_internals(void* data) 
+void _parse_PRINT_internals(int idx, void* data) 
 {
+  printf("%d. ", idx);
   if (is_plane(data)) _hive_PRINT_plane((struct Plane*)data);
   else if (is_train(data)) _hive_PRINT_train((struct Train*)data);
   else printf("%p\n", data);
@@ -232,6 +233,7 @@ void _parse_PRINT_internals(void* data)
 
 void _parse_PRINT(struct Hive* hive) 
 {
+  printf("List contains %d elements\n", hive_size(hive));
   if (hive_is_empty(hive)) printf("Empty\n");
   else hive_print(hive, &_parse_PRINT_internals);
 }
