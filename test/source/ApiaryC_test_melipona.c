@@ -7,11 +7,13 @@
 
 int main()
 {
-  struct Plane* plane = plane_create(1, 2, 3, 4, "Hello, world!");
-  struct Train* train = train_create(5, 6, 7, "Hello, world!");
+  struct Plane* plane = plane_create(1, 2, 3, 4, "Hello, world!", "object1");
+  struct Train* train = train_create(5, 6, 7, "Hello, world!", "object2");
+  struct Boat* boat = boat_create(133, 222, 3, 4, "Hello, world!", "object3");
 
-  assert(is_plane(plane) && !is_train(plane));
-  assert(is_train(train) && !is_plane(train));
+  assert(is_plane(plane) && !is_train(plane) && !is_boat(plane));
+  assert(is_train(train) && !is_plane(train) && !is_boat(train));
+  assert(is_boat(boat) && !is_plane(boat) && !is_train(boat));
 
   assert(is_plane_attr("len") && is_plane_attr("cap"));
   assert(is_train_attr("cnt") && !is_plane_attr("cnt"));
@@ -24,7 +26,7 @@ int main()
 
   assert(attr_eq_int(plane, "len", 1));
   assert(attr_eq_int(train, "cnt", 5));
-  assert(attr_eq_str(plane, "dest", "Hello, world!"));
+  assert(attr_eq_str(boat, "name", "object3"));
 
   return 0;
 }
