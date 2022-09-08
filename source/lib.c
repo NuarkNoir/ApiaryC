@@ -182,37 +182,37 @@ char* _parse_desination(char** tokens)
 }
 
 void _parse_ADD_plane(char** params, struct Hive* hive) {
-  if (count_tokens(params) != 6 || !_is_number(params[0]) || !_is_number(params[1]) || !_is_number(params[2]) || !_is_number(params[3]) || !_valid_dest_prefix(params[4])) 
+  if (count_tokens(params) != 7 || !_is_number(params[1]) || !_is_number(params[2]) || !_is_number(params[3]) || !_is_number(params[4]) || !_valid_dest_prefix(params[5])) 
   {
     printf("Invalid ADD plane comand\n");
     return;
   }
   struct Plane* plane = plane_create(
-    atoi(params[0]), atoi(params[1]), atoi(params[2]), atoi(params[3]), _parse_desination(params + 4)
+    atoi(params[1]), atoi(params[2]), atoi(params[3]), atoi(params[4]), _parse_desination(params + 5), params[0]
   );
   hive_push(hive, plane);
 }
 
 void _parse_ADD_train(char** params, struct Hive* hive) {
-  if (count_tokens(params) != 5 || !_is_number(params[0]) || !_is_number(params[1]) || !_is_number(params[2]) || !_valid_dest_prefix(params[3])) 
+  if (count_tokens(params) != 6 || !_is_number(params[1]) || !_is_number(params[2]) || !_is_number(params[3]) || !_valid_dest_prefix(params[4])) 
   {
     printf("Invalid ADD train command\n");
     return;
   }
   struct Train* train = train_create(
-    atoi(params[0]), atoi(params[1]), atoi(params[2]), _parse_desination(params + 3)
+    atoi(params[1]), atoi(params[2]), atoi(params[3]), _parse_desination(params + 4), params[0]
   );
   hive_push(hive, train);
 }
 
 void _parse_ADD_boat(char** params, struct Hive* hive) {
-  if (count_tokens(params) != 6 || !_is_number(params[0]) || !_is_number(params[1]) || !_is_number(params[2]) || !_is_number(params[3]) || !_valid_dest_prefix(params[4])) 
+  if (count_tokens(params) != 7 || !_is_number(params[1]) || !_is_number(params[2]) || !_is_number(params[3]) || !_is_number(params[4]) || !_valid_dest_prefix(params[5])) 
   {
     printf("Invalid ADD plane comand\n");
     return;
   }
   struct Boat* boat = boat_create(
-    atoi(params[0]), atoi(params[1]), atoi(params[2]), atoi(params[3]), _parse_desination(params + 4)
+    atoi(params[1]), atoi(params[2]), atoi(params[3]), atoi(params[4]), _parse_desination(params + 5), params[0]
   );
   hive_push(hive, boat);
 }
@@ -228,17 +228,17 @@ void _parse_ADD(char** params, struct Hive* hive)
 
 void _hive_PRINT_plane(struct Plane* plane)
 {
-  printf("Plane {len: %d; cap: %d; spd: %d; dist: %d; dest: '%s'}\n", plane->len, plane->cap, plane->spd, plane->dist, plane->dest);
+  printf("Plane {name: %s; len: %d; cap: %d; spd: %d; dist: %d; dest: '%s'}\n", plane->name, plane->len, plane->cap, plane->spd, plane->dist, plane->dest);
 }
 
 void _hive_PRINT_train(struct Train* train)
 {
-  printf("Train {cnt: %d; spd: %d; dest: '%s'}\n", train->cnt, train->spd, train->dest);
+  printf("Train {name: %s; cnt: %d; spd: %d; dest: '%s'}\n", train->name, train->cnt, train->spd, train->dest);
 }
 
 void _hive_PRINT_boat(struct Boat* boat)
 {
-  printf("Boat {disp: %d; year: %d; spd: %d; dist: %d; dest: '%s'}\n", boat->disp, boat->year, boat->spd, boat->dist, boat->dest);
+  printf("Boat {name: %s; disp: %d; year: %d; spd: %d; dist: %d; dest: '%s'}\n", boat->name, boat->disp, boat->year, boat->spd, boat->dist, boat->dest);
 }
 
 void _parse_PRINT_internals(int idx, void* data) 
@@ -268,7 +268,7 @@ bool _parse_SORT_comparator(char* attr, void* a, void* b)
   void* attrB = get_attr(b, attr);
   if (attrA == NULL) return true;
   if (attrB == NULL) return false;
-  if (seq(attr, "dest")) return strcmp(*(char**)attrA, *(char**)attrB) < 0;
+  if (seq(attr, "dest") || seq(attr, "name")) return strcmp(*(char**)attrA, *(char**)attrB) < 0;
   return *(int*)attrA < *(int*)attrB;
 }
 
@@ -322,6 +322,18 @@ void _parse_EXIT(char** tokens)
   exit(exitCode);
 }
 
+void _parse_RENAME(char** params, struct Hive* hive) {
+  if (count_tokens(params) != 2 || !_is_number(params[0])) printf("Invalid RENAME command\n");
+  else {
+    struct Honeycomb* honeycomb = hive_get(hive, atoi(params[0]));
+    if (honeycomb == NULL) printf("Invalid RENAME index: %s\n", params[0]);
+    else if (is_plane(honeycomb->data)) ((struct Plane*)honeycomb->data)->name = params[1];
+    else if (is_train(honeycomb->data)) ((struct Train*)honeycomb->data)->name = params[1];
+    else if (is_boat(honeycomb->data)) ((struct Boat*)honeycomb->data)->name = params[1];
+    else printf("Invalid RENAME index: couldn't rename object at index %s\n", params[0]);
+  }
+}
+
 // TODO: Add RENAME
 void parse_line(char** tokens, struct Hive* hive) {
   if (seq(tokens[0], "@meta")) _parse_meta(tokens + 1);
@@ -332,5 +344,6 @@ void parse_line(char** tokens, struct Hive* hive) {
   else if (seq(tokens[0], "REM")) _parse_REM(tokens + 1, hive);
   else if (seq(tokens[0], "ECHO")) _parse_ECHO(tokens + 1);
   else if (seq(tokens[0], "EXIT")) _parse_EXIT(tokens + 1);
+  else if (seq(tokens[0], "RENAME")) _parse_RENAME(tokens + 1, hive);
   else printf("Unknown command: %s\n", tokens[0]);
 }

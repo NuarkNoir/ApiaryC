@@ -24,12 +24,12 @@ ECHO ERR_MALFORMED_INPUT
 SORT
 REM
 ADD
-ADD plane -1
-ADD plane 0
-ADD plane 1.1
-ADD plane 1 0
-ADD plane 1 -1
-ADD plane 1 1.1
+ADD plane plane1 -1
+ADD plane plane2 0
+ADD plane plane3 1.1
+ADD plane plane4 1 0
+ADD plane plane5 1 -1
+ADD plane plane6 1 1.1
 ECHO ==============================================================
 
 ECHO ERR_UNK_ATTR
@@ -39,77 +39,97 @@ REM if spd ; 5
 ECHO ==============================================================
 
 ECHO check REM first node
-ADD train 1 5 1 гор. тест
-ADD plane 1 1 1 1 гор. тест
+ADD train train1 1 5 1 гор. тест
+ADD plane plane1 1 1 1 1 гор. тест
 REM if spd = 5
 PRINT
 CLEAR
 ECHO ==============================================================
 
 ECHO check REM last node
-ADD train 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
+ADD train train1 1 1 1 гор. тест
+ADD plane plane1 5 1 1 1 гор. тест
 REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
 
 ECHO check REM middle node
-ADD train 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 6 1 1 1 гор. тест
+ADD train train1 1 1 1 гор. тест
+ADD plane plane1 5 1 1 1 гор. тест
+ADD plane plane2 6 1 1 1 гор. тест
 REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
 
 ECHO check REM first mult node
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 6 1 1 1 гор. тест
+ADD plane plane1 5 1 1 1 гор. тест
+ADD plane plane2 5 1 1 1 гор. тест
+ADD plane plane3 5 1 1 1 гор. тест
+ADD plane plane4 6 1 1 1 гор. тест
 REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
 
 ECHO check REM last mult node
-ADD plane 6 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
+ADD plane plane1 6 1 1 1 гор. тест
+ADD plane plane2 5 1 1 1 гор. тест
+ADD plane plane3 5 1 1 1 гор. тест
+ADD plane plane4 5 1 1 1 гор. тест
 REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
 
 ECHO check REM middle mult node
-ADD plane 6 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 6 1 1 1 гор. тест
+ADD plane plane1 6 1 1 1 гор. тест
+ADD plane plane2 5 1 1 1 гор. тест
+ADD plane plane3 5 1 1 1 гор. тест
+ADD plane plane4 5 1 1 1 гор. тест
+ADD plane plane5 6 1 1 1 гор. тест
 REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
 
 ECHO check REM fragmented mult node
-ADD plane 6 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 6 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
-ADD plane 5 1 1 1 гор. тест
+ADD plane plane1 6 1 1 1 гор. тест
+ADD plane plane2 5 1 1 1 гор. тест
+ADD plane plane3 5 1 1 1 гор. тест
+ADD plane plane4 6 1 1 1 гор. тест
+ADD plane plane5 5 1 1 1 гор. тест
+ADD plane plane6 5 1 1 1 гор. тест
 REM if len = 5
 PRINT
 CLEAR
 ECHO ==============================================================
 
 ECHO let's add boats!
-ADD plane 5 1 1 1 гор. тест
-ADD plane 6 1 1 1 гор. тест
-ADD train 1 1 1 гор. тест2
-ADD boat 600 1999 1 1 гор. тест
+ADD plane plane1 5 1 1 1 гор. тест
+ADD boat boat1 600 1999 1 1 гор. тест
+ADD plane plane2 6 1 1 1 гор. тест
+ADD train train1 1 1 1 гор. тест2
+PRINT
+ECHO ==============================================================
+
+ECHO let's remove if name = plane1
+REM if name = plane1
+PRINT
+ECHO ==============================================================
+
+ECHO how about sorting on name?
+SORT name
+PRINT
+ECHO ==============================================================
+
+ECHO now let's rename 2nd element (non-existant)
+RENAME 1 brand_new_name
+PRINT
+ECHO ==============================================================
+
+ECHO now let's rename 8th element (non-existant)
+RENAME 7 new_name
 PRINT
 ECHO ==============================================================

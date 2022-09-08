@@ -99,7 +99,7 @@ bool _hive_remove_if_attr_predicate(char* attr, char* predicate, void* data, voi
 {
   void* attrVal = get_attr(data, attr);
   if (attrVal == NULL) return false;
-  if (strcmp(attr, "dest") == 0) {
+  if (strcmp(attr, "dest") == 0 || strcmp(attr, "name") == 0) {
     int cval = strcmp(*(char**)attrVal, expected);
     return strcmp(predicate, "=") == 0 ? (cval == 0) : (cval != 0);
   }
@@ -185,4 +185,17 @@ size_t hive_size(struct Hive* hive)
   }
 
   return c;
+}
+
+struct Honeycomb* hive_get(struct Hive* hive, size_t index)
+{
+  struct Honeycomb* comb = hive->head;
+  if (comb == NULL || index >= hive_size(hive)) return NULL;
+  size_t c = 0;
+  do {
+    if (c == index) return comb;
+    c += 1;
+    comb = comb->next;
+  } while (comb != hive->head);
+  return NULL;
 }

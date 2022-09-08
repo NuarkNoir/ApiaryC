@@ -102,4 +102,12 @@ void hive_sort(struct Hive* hive, char* attr, bool (*comparator)(char*, void*, v
  */
 size_t hive_size(struct Hive* hive);
 
+/**
+ * @brief Функция возвращает элемент по индексу
+ * @param[in] hive - указатель на список
+ * @param[in] index - индекс элемента
+ * @return - указатель на элемент или NULL, если элемента с таким индексом нет
+ */
+struct Honeycomb* hive_get(struct Hive* hive, size_t index);
+
 #endif // HIVE_H

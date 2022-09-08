@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Plane* plane_create(int len, int cap, int spd, int dist, char* dest)
+struct Plane* plane_create(int len, int cap, int spd, int dist, char* dest, char* name)
 {
   struct Plane* plane = (struct Plane*)malloc(sizeof(struct Plane) + sizeof(int)*5 + sizeof(char*));
   plane->__struct_id = 0;
@@ -12,10 +12,11 @@ struct Plane* plane_create(int len, int cap, int spd, int dist, char* dest)
   plane->spd = spd;
   plane->dist = dist;
   plane->dest = dest;
+  plane->name = name;
   return plane;
 }
 
-struct Train* train_create(int cnt, int spd, int dist, char* dest)
+struct Train* train_create(int cnt, int spd, int dist, char* dest, char* name)
 {
   struct Train* train = (struct Train*)malloc(sizeof(struct Train) + sizeof(int)*4 + sizeof(char*));
   train->__struct_id = 1;
@@ -23,10 +24,11 @@ struct Train* train_create(int cnt, int spd, int dist, char* dest)
   train->spd = spd;
   train->dist = dist;
   train->dest = dest;
+  train->name = name;
   return train;
 }
 
-struct Boat* boat_create(int disp, int year, int spd, int dist, char* dest)
+struct Boat* boat_create(int disp, int year, int spd, int dist, char* dest, char* name)
 {
   struct Boat* boat = (struct Boat*)malloc(sizeof(struct Boat) + sizeof(int)*5 + sizeof(char*));
   boat->__struct_id = 2;
@@ -35,25 +37,26 @@ struct Boat* boat_create(int disp, int year, int spd, int dist, char* dest)
   boat->spd = spd;
   boat->dist = dist;
   boat->dest = dest;
+  boat->name = name;
   return boat;
 }
 
 bool is_plane(void* obj)
 {
-  return ((struct Plane*)obj)->__struct_id == 0;
+  return obj == NULL ? false : (((struct Plane*)obj)->__struct_id == 0);
 }
 
 bool is_train(void* obj)
 {
-  return ((struct Train*)obj)->__struct_id == 1;
+  return obj == NULL ? false : (((struct Train*)obj)->__struct_id == 1);
 }
 
 bool is_boat(void* obj)
 {
-  return ((struct Boat*)obj)->__struct_id == 2;
+  return obj == NULL ? false : (((struct Boat*)obj)->__struct_id == 2);
 }
 
-char** common_attrs = (char*[]) { "spd", "dist", "dest", NULL};
+char** common_attrs = (char*[]) { "spd", "dist", "dest", "name", NULL};
 char** plane_attrs = (char*[]) { "len", "cap", NULL};
 char** train_attrs = (char*[]) { "cnt", NULL};
 char** boat_attrs = (char*[]) { "disp", "year", NULL};
@@ -120,6 +123,8 @@ void* get_plane_attr(struct Plane* plane, char* attr)
     return &plane->dist;
   } else if (strcmp(attr, "dest") == 0) {
     return &plane->dest;
+  } else if (strcmp(attr, "name") == 0) {
+    return &plane->name;
   }
   return NULL;
 }
@@ -134,6 +139,8 @@ void* get_train_attr(struct Train* train, char* attr)
     return &train->dist;
   } else if (strcmp(attr, "dest") == 0) {
     return &train->dest;
+  } else if (strcmp(attr, "name") == 0) {
+    return &train->name;
   }
   return NULL;
 }
@@ -150,6 +157,8 @@ void* get_boat_attr(struct Boat* boat, char* attr)
     return &boat->dist;
   } else if (strcmp(attr, "dest") == 0) {
     return &boat->dest;
+  } else if (strcmp(attr, "name") == 0) {
+    return &boat->name;
   }
   return NULL;
 }

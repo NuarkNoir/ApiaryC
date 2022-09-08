@@ -5,7 +5,6 @@
 #include <stddef.h>
 #include "hive.h"
 
-// TODO: Add name attr to all
 /**
  * @brief Структура, описывающая самолёт
  */
@@ -16,6 +15,7 @@ struct Plane {
     int spd; ///< speed
     int dist; ///< distance
     char* dest; ///< destination
+    char* name; ///< name
 };
 
 /**
@@ -27,6 +27,7 @@ struct Train {
     int spd; ///< speed
     int dist; ///< distance
     char* dest; ///< destination
+    char* name; ///< name
 };
 
 struct Boat {
@@ -36,6 +37,7 @@ struct Boat {
     int spd; ///< speed
     int dist; ///< distance
     char* dest; ///< destination
+    char* name; ///< name
 };
 
 /**
@@ -47,7 +49,7 @@ struct Boat {
  * @param[in] dest - destination
  * @return - указатель на структуру Plane
  */
-struct Plane* plane_create(int len, int cap, int spd, int dist, char* dest);
+struct Plane* plane_create(int len, int cap, int spd, int dist, char* dest, char* name);
 /**
  * @brief Функция, создающая поезд
  * @param[in] cnt - vagon count
@@ -56,7 +58,7 @@ struct Plane* plane_create(int len, int cap, int spd, int dist, char* dest);
  * @param[in] dest - destination
  * @return - указатель на структуру Train
  */
-struct Train* train_create(int cnt, int spd, int dist, char* dest);
+struct Train* train_create(int cnt, int spd, int dist, char* dest, char* name);
 
 /**
  * @brief Функция, создающая самолёт
@@ -67,7 +69,7 @@ struct Train* train_create(int cnt, int spd, int dist, char* dest);
  * @param[in] dest - destination
  * @return - указатель на структуру Boat
  */
-struct Boat* boat_create(int disp, int year, int spd, int dist, char* dest);
+struct Boat* boat_create(int disp, int year, int spd, int dist, char* dest, char* name);
 
 /**
  * @brief Функция, проверяющая тип объекта на соответствие Plane
